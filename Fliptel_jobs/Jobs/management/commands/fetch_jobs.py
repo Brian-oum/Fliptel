@@ -15,7 +15,7 @@ class Command(BaseCommand):
                 defaults={
                     'location': job['location'],
                     'description': job['description'],
-                    'date_posted': job['date_posted'],
+                    'posted_date': job['posted_date'],
                     'source': job['source']
                 }
             )
