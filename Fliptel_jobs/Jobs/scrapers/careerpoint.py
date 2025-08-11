@@ -23,7 +23,7 @@ def scrape_careerpoint():
             'location': "Kenya",
             'description': description,
             'url': job_url,
-            'date_posted': datetime.now().date(),
+            'posted_date': datetime.now().date(),
             'source': "CareerPoint Kenya"
         })
 

@@ -5,8 +5,8 @@
     <h1>Latest Job Posts</h1>
     {% for job in jobs %}
         <div>
-            <h2><a href="{% url 'job_view' signed_job_id=job.get_signed_id %}">{{ job.title }}</a></h2>
-            <p>{{ job.company }} | {{ job.location }} | {{ job.date_posted }}</p>
+            <h2><a href="{% url 'job_view' job.id %}">{{ job.title }}</a></h2>
+            <p>{{ job.company }} | {{ job.location }} | {{ job.posted_date }}</p>
             <p>{{ job.description|truncatewords:30 }}</p>
         </div>
         <hr>
