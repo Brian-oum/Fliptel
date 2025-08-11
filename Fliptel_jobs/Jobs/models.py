@@ -48,6 +48,8 @@ class Job(models.Model):
     description = models.TextField(blank=True, null=True)
     url = models.URLField()
     posted_date = models.DateTimeField()
+    source = models.CharField(max_length=100, null=True, blank=True, default='unknown')
+
 
     def __str__(self):
         return f"{self.title} at {self.company}"
