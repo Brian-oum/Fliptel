@@ -1,0 +1,92 @@
+css
+/* Reset default margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Job card container */
+.job-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+/* Heading */
+h1 {
+    font-size: 2rem;
+    color: #1a202c;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+
+/* Paragraphs */
+p {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+p strong {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+/* Description paragraph */
+.description {
+    font-size: 1rem;
+    color: #4a5568;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+/* Apply button */
+.apply-button {
+    display: inline-block;
+    background-color: #3182ce;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.apply-button:hover {
+    background-color: #2b6cb0;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .job-card {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .apply-button {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+    }
+}
