@@ -1,11 +1,26 @@
-<h1>{{ job.title }}</h1>
-<p><strong>Company:</strong> {{ job.company }}</p>
-<p><strong>Location:</strong> {{ job.location }}</p>
-<p><strong>Posted on:</strong> {{ job.posted_date|date:"M d, Y" }}</p>
-<p><strong>Source:</strong> {{ job.source }}</p>
+{% load static %}
 
-<p>{{ job.description }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ job.title }}</title>
+    <link rel="stylesheet" href="{% static '/css/job_detail.css' %}">
+</head>
+<body>
 
-{% if job.url %}
-    <p><a href="{{ job.url }}" target="_blank">Apply Now</a></p>
-{% endif %}
+    <h1>{{ job.title }}</h1>
+    <p><strong>Company:</strong> {{ job.company }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Posted on:</strong> {{ job.posted_date|date:"M d, Y" }}</p>
+    <p><strong>Source:</strong> {{ job.source }}</p>
+
+    <p>{{ job.description }}</p>
+
+    {% if job.url %}
+        <p><a href="{{ job.url }}" target="_blank">Apply Now</a></p>
+    {% endif %}
+
+</body>
+</html>
