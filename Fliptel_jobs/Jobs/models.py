@@ -24,7 +24,7 @@ class JobSource(models.Model):
 
 class JobCategory(models.Model):
     """
-    Categories like IT, Healthcare, Finance, etc.
+    Job categories like IT, Healthcare, Finance, etc.
     """
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -49,7 +49,15 @@ class Job(models.Model):
     url = models.URLField()
     posted_date = models.DateTimeField()
     source = models.CharField(max_length=100, null=True, blank=True, default='unknown')
-
+    category = models.ForeignKey(
+        JobCategory,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="jobs"
+    )
 
     def __str__(self):
-        return f"{self.title} at {self.company}"
+        if self.company:
+            return f"{self.title} at {self.company}"
+        return self.title
