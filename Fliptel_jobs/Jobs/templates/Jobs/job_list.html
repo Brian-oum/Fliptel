@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head><title>Job Listings</title></head>
-<body>
-    <h1>Latest Job Posts</h1>
-    {% for job in jobs %}
-        <div>
-            <h2><a href="{% url 'job_view' job.id %}">{{ job.title }}</a></h2>
-            <p>{{ job.company }} | {{ job.location }} | {{ job.posted_date }}</p>
-            <p>{{ job.description|truncatewords:30 }}</p>
-        </div>
-        <hr>
-    {% endfor %}
-</body>
-</html>
+<h1>Available Jobs</h1>
+
+{% if jobs %}
+    <ul>
+        {% for job in jobs %}
+            <li>
+                <a href="{% url 'job_detail' job.id %}">
+                    {{ job.title }} - {{ job.company }}
+                </a>
+                <br>
+                <small>{{ job.location }} | Posted: {{ job.posted_date|date:"M d, Y" }} | Source: {{ job.source }}</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No jobs found at the moment.</p>
+{% endif %}
