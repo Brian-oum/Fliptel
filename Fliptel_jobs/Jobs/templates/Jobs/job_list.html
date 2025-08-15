@@ -1,17 +1,9 @@
-<h1>Available Jobs</h1>
-
-{% if jobs %}
-    <ul>
-        {% for job in jobs %}
-            <li>
-                <a href="{% url 'job_detail' job.id %}">
-                    {{ job.title }} - {{ job.company }}
-                </a>
-                <br>
-                <small>{{ job.location }} | Posted: {{ job.posted_date|date:"M d, Y" }} | Source: {{ job.source }}</small>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No jobs found at the moment.</p>
-{% endif %}
+{% for job in jobs %}
+<div class="job-card">
+    <h2><a href="{{ job.link }}">{{ job.title }}</a></h2>
+    <p>Company: {{ job.company|default:"N/A" }}</p>
+    <p>Location: {{ job.location|default:"Kenya" }}</p>
+    <p>Source: {{ job.source }}</p>
+    <p>{{ job.description|truncatewords:50 }}</p>
+</div>
+{% endfor %}
