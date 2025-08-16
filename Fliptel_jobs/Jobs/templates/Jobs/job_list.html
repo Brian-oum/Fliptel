@@ -1,9 +1,148 @@
-{% for job in jobs %}
-<div class="job-card">
-    <h2><a href="{{ job.link }}">{{ job.title }}</a></h2>
-    <p>Company: {{ job.company|default:"N/A" }}</p>
-    <p>Location: {{ job.location|default:"Kenya" }}</p>
-    <p>Source: {{ job.source }}</p>
-    <p>{{ job.description|truncatewords:50 }}</p>
+<style>
+    /* ===== Modern Job Board Styles ===== */
+    :root {
+        --primary: #3b82f6;
+        --primary-hover: #2563eb;
+        --text: #1e293b;
+        --text-light: #64748b;
+        --bg: #f8fafc;
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+        --radius: 8px;
+        --shadow: 0 1px 3px rgba(0,0,0,0.1);
+        --success: #10b981;
+    }
+
+    h1 {
+        color: var(--text);
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        text-align: center;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--border);
+    }
+
+    /* Job List Container */
+    .job-list {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    /* Job Card */
+    .job-card {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        transition: all 0.2s ease;
+    }
+
+    .job-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    /* Job Title */
+    .job-card h2 {
+        color: var(--text);
+        font-size: 1.4rem;
+        margin: 0 0 0.75rem 0;
+        font-weight: 600;
+    }
+
+    /* Job Details */
+    .job-card p {
+        color: var(--text);
+        margin: 0.5rem 0;
+        line-height: 1.6;
+    }
+
+    .job-card p strong {
+        color: var(--text-light);
+        font-weight: 500;
+        min-width: 80px;
+        display: inline-block;
+    }
+
+    /* Job Description */
+    .job-description {
+        margin: 1rem 0;
+        color: var(--text);
+        line-height: 1.6;
+    }
+
+    /* Apply Button */
+    .apply-btn {
+        display: inline-block;
+        background: var(--primary);
+        color: white;
+        padding: 0.5rem 1.25rem;
+        border-radius: var(--radius);
+        text-decoration: none;
+        font-weight: 500;
+        margin-top: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .apply-btn:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        color: var(--text-light);
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        border: 1px dashed var(--border);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+        .job-card {
+            padding: 1.25rem;
+        }
+        
+        h1 {
+            font-size: 1.75rem;
+        }
+        
+        .job-card h2 {
+            font-size: 1.25rem;
+        }
+    }
+</style>
+
+<div class="job-list">
+    <h1>Available Jobs</h1>
+    
+    {% for job in jobs %}
+        <div class="job-card">
+            <h2>{{ job.title }}</h2>
+            
+            <p><strong>Company:</strong> {{ job.company }}</p>
+            <p><strong>Location:</strong> {{ job.location }}</p>
+            <p><strong>Type:</strong> {{ job.get_job_type_display }}</p>
+            
+            <div class="job-description">
+                {{ job.description|truncatewords:30 }}
+            </div>
+            
+            {% if job.url %}
+                <a href="{{ job.url }}" class="apply-btn" target="_blank">Apply Now</a>
+            {% endif %}
+        </div>
+    {% empty %}
+        <div class="empty-state">
+            <p>No jobs posted yet.</p>
+        </div>
+    {% endfor %}
 </div>
-{% endfor %}

@@ -1,13 +1,20 @@
+# jobs/models.py
 from django.db import models
+from django.utils import timezone
 
 class Job(models.Model):
     title = models.CharField(max_length=255)
-    link = models.URLField(unique=True, null=True, blank=True)  # From previous fix
-    company = models.CharField(max_length=255, null=True, blank=True)
-    location = models.CharField(max_length=255, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
-    source = models.CharField(max_length=100, null=True, blank= True)
-    pub_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)  # Allow null temporarily
+    company = models.CharField(max_length=255, default='')
+    location = models.CharField(max_length=255,default='Kenya')
+    description = models.TextField( default='')
+    job_type = models.CharField(max_length=100,default='',choices=[
+        ('tech', 'Technology'),
+        ('business', 'Business'),
+        ('finance', 'Finance'),
+        ('other', 'Other'),
+    ])
+    posted_date = models.DateTimeField(default=timezone.now)
+    url = models.URLField(blank=True, null=True)  # optional if you want external links
 
     def __str__(self):
         return self.title
