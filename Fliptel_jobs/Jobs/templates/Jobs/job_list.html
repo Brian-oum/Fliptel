@@ -1,148 +1,414 @@
-<style>
-    /* ===== Modern Job Board Styles ===== */
-    :root {
-        --primary: #3b82f6;
-        --primary-hover: #2563eb;
-        --text: #1e293b;
-        --text-light: #64748b;
-        --bg: #f8fafc;
-        --card-bg: #ffffff;
-        --border: #e2e8f0;
-        --radius: 8px;
-        --shadow: 0 1px 3px rgba(0,0,0,0.1);
-        --success: #10b981;
-    }
+{% load static %}
 
-    h1 {
-        color: var(--text);
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
-        font-weight: 700;
-        text-align: center;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid var(--border);
-    }
-
-    /* Job List Container */
-    .job-list {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 0 1rem;
-    }
-
-    /* Job Card */
-    .job-card {
-        background: var(--card-bg);
-        border-radius: var(--radius);
-        padding: 1.5rem;
-        margin-bottom: 1.25rem;
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow);
-        transition: all 0.2s ease;
-    }
-
-    .job-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        border-color: rgba(59, 130, 246, 0.3);
-    }
-
-    /* Job Title */
-    .job-card h2 {
-        color: var(--text);
-        font-size: 1.4rem;
-        margin: 0 0 0.75rem 0;
-        font-weight: 600;
-    }
-
-    /* Job Details */
-    .job-card p {
-        color: var(--text);
-        margin: 0.5rem 0;
-        line-height: 1.6;
-    }
-
-    .job-card p strong {
-        color: var(--text-light);
-        font-weight: 500;
-        min-width: 80px;
-        display: inline-block;
-    }
-
-    /* Job Description */
-    .job-description {
-        margin: 1rem 0;
-        color: var(--text);
-        line-height: 1.6;
-    }
-
-    /* Apply Button */
-    .apply-btn {
-        display: inline-block;
-        background: var(--primary);
-        color: white;
-        padding: 0.5rem 1.25rem;
-        border-radius: var(--radius);
-        text-decoration: none;
-        font-weight: 500;
-        margin-top: 1rem;
-        transition: all 0.2s ease;
-    }
-
-    .apply-btn:hover {
-        background: var(--primary-hover);
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-    }
-
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 2rem;
-        color: var(--text-light);
-        background: var(--card-bg);
-        border-radius: var(--radius);
-        border: 1px dashed var(--border);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 600px) {
-        .job-card {
-            padding: 1.25rem;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Board</title>
+    <style>
+        /* ===== Modern Job Board Styles ===== */
+        :root {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --radius: 8px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --success: #10b981;
         }
-        
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text);
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            padding: 2rem 1rem 4rem;
+            text-align: center;
+            border-bottom-left-radius: var(--radius);
+            border-bottom-right-radius: var(--radius);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+            padding: 0;
+            margin: 0;
+            flex-wrap: wrap;
+        }
+
+        .menu li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: background 0.2s;
+        }
+
+        .menu li a:hover,
+        .menu li a.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .hero-search {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-search input {
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            border: none;
+            width: 250px;
+        }
+
+        .hero-search button {
+            background: var(--success);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .hero-search button:hover {
+            background: #059669;
+        }
+
+        /* ===== Jobs Section ===== */
         h1 {
-            font-size: 1.75rem;
+            color: var(--text);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
         }
-        
-        .job-card h2 {
-            font-size: 1.25rem;
-        }
-    }
-</style>
 
-<div class="job-list">
-    <h1>Available Jobs</h1>
-    
-    {% for job in jobs %}
-        <div class="job-card">
-            <h2>{{ job.title }}</h2>
+        .job-list {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Job Card - Expanded Version */
+        .job-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .job-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .job-header {
+            grid-column: 1 / -1;
+        }
+
+        .job-card h2 {
+            color: var(--text);
+            font-size: 1.6rem;
+            margin: 0 0 0.75rem 0;
+            font-weight: 600;
+        }
+
+        .job-card p {
+            color: var(--text);
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+
+        .job-card p strong {
+            color: var(--text-light);
+            font-weight: 500;
+            min-width: 100px;
+            display: inline-block;
+        }
+
+        /* Job Description */
+        .job-description {
+            margin: 1rem 0;
+            color: var(--text);
+            line-height: 1.6;
+            grid-column: 1 / -1;
+        }
+
+        /* Job Details Section */
+        .job-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            grid-column: 1 / -1;
+        }
+
+        .detail-group {
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        .detail-group h3 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        /* Apply Button */
+        .apply-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            grid-column: 1 / -1;
+            justify-self: start;
+        }
+
+        .apply-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px dashed var(--border);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Filter Form */
+        .filter-form {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .filter-form input, 
+        .filter-form select {
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        .filter-form button {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .filter-form button:hover {
+            background: #059669;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .job-card {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .job-card h2 {
+                font-size: 1.4rem;
+            }
+
+            .filter-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-form input,
+            .filter-form select,
+            .filter-form button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .job-card {
+                padding: 1.25rem;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .job-card h2 {
+                font-size: 1.3rem;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .menu {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <nav class="navbar">
+            <div class="logo">JobBoard</div>
+            <ul class="menu">
+                {% for code, name in faculties %}
+                    <li>
+                        <a href="?faculty={{ code }}" 
+                           class="{% if request.GET.faculty == code %}active{% endif %}">
+                            {{ name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <div class="hero-content">
+            <h1>Find Jobs by Career Field</h1>
+            <p>Explore opportunities across different industries and professions.</p>
+            <form method="get" class="hero-search">
+                <input type="text" name="q" placeholder="Search jobs..." value="{{ request.GET.q }}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </header>
+
+    <!-- Jobs Section -->
+    <div class="job-list">
+        <h1>Available Jobs</h1>
+
+        <!-- Filter Form -->
+        <form method="get" class="filter-form">
+            <input type="text" name="q" placeholder="Search jobs..." value="{{ request.GET.q }}">
             
-            <p><strong>Company:</strong> {{ job.company }}</p>
-            <p><strong>Location:</strong> {{ job.location }}</p>
-            <p><strong>Type:</strong> {{ job.get_job_type_display }}</p>
-            
-            <div class="job-description">
-                {{ job.description|truncatewords:30 }}
+            <select name="location">
+                <option value="">All Locations</option>
+                {% for loc in locations %}
+                    <option value="{{ loc }}" {% if request.GET.location == loc %}selected{% endif %}>{{ loc }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="job_type">
+                <option value="">All Job Types</option>
+                {% for type, label in job_types %}
+                    <option value="{{ type }}" {% if request.GET.job_type == type %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Filter</button>
+        </form>
+
+        {% for job in jobs %}
+            <div class="job-card">
+                <div class="job-header">
+                    <h2>{{ job.title }}</h2>
+                    <p><strong>Company:</strong> {{ job.company }}</p>
+                </div>
+                
+                <div class="job-description">
+                    <h3>Job Description</h3>
+                    {{ job.description|linebreaks }}
+                </div>
+
+                {% if job.url %}
+                    <a href="{{ job.url }}" class="apply-btn" target="_blank">Apply Now</a>
+                {% endif %}
             </div>
-            
-            {% if job.url %}
-                <a href="{{ job.url }}" class="apply-btn" target="_blank">Apply Now</a>
-            {% endif %}
-        </div>
-    {% empty %}
-        <div class="empty-state">
-            <p>No jobs posted yet.</p>
-        </div>
-    {% endfor %}
-</div>
+        {% empty %}
+            <div class="empty-state">
+                <p>No jobs found matching your criteria.</p>
+                <p>Try adjusting your filters or search terms.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
