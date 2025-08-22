@@ -46,6 +46,13 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             font-size: 16px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
         }
 
         a {
@@ -285,7 +292,7 @@
             max-width: 600px;
             margin: 0 auto;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 0.75rem;
         }
 
@@ -299,20 +306,21 @@
         }
 
         .search-button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: var(--radius);
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            width: 100%;
+           background: var(--primary);
+           color: white;
+           border: none;
+           padding: 1rem;
+           border-radius: var(--radius);
+           font-weight: 600;
+           cursor: pointer;
+           transition: var(--transition);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           gap: 0.5rem;
+           width: auto;
         }
+
 
         /* ===== Jobs Section ===== */
         .jobs-section {
@@ -486,6 +494,85 @@
             margin-bottom: 1.5rem;
         }
 
+        /* ===== Footer ===== */
+        .footer {
+            background-color: #2b2d42;
+            color: white;
+            padding: 3rem 0 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .footer-section {
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1.25rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #adb5bd;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            background-color: #1d1e2c;
+            padding: 1.5rem 0;
+            text-align: center;
+        }
+
+        .footer-bottom-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sms-ad {
+            background: linear-gradient(90deg, #4361ee, #7209b7);
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .sms-ad p {
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin: 0;
+        }
+
+        .copyright {
+            color: #adb5bd;
+            font-size: 0.875rem;
+        }
+
         /* ===== Mobile Menu ===== */
         @media (max-width: 768px) {
             .hamburger {
@@ -529,9 +616,11 @@
             }
 
             .search-button {
-                width: auto;
-                padding: 0 2rem;
+               width: auto;
+               padding: 0 2rem;
+               flex-shrink: 0; /* Prevents button from shrinking */
             }
+
 
             .filter-form {
                 flex-direction: row;
@@ -574,6 +663,10 @@
                 width: auto;
                 padding: 0.75rem 1.5rem;
             }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (min-width: 768px) {
@@ -596,10 +689,24 @@
             .job-meta {
                 grid-template-columns: repeat(3, 1fr);
             }
+
+            .footer-content {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .footer-bottom-content {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
 
         @media (min-width: 1024px) {
             .job-meta {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .footer-content {
                 grid-template-columns: repeat(4, 1fr);
             }
         }
@@ -645,98 +752,128 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Find Your Perfect Career Match</h1>
-            <p>Discover thousands of career opportunities across all industries and locations.</p>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Find Your Perfect Career Match</h1>
+                <p>Discover thousands of career opportunities across all industries and locations.</p>
+                
+                <form method="get" class="search-form">
+                    <input type="text" name="q" class="search-input" placeholder="Job title, keywords, or company" value="{{ request.GET.q }}">
+                    <button type="submit" class="search-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        Search
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Jobs Section -->
+        <section class="jobs-section">
+            <div class="container">
+                <h2 class="section-title">Available Jobs</h2>
+
+
+                <div class="job-list">
+                    {% for job in jobs %}
+                        <div class="job-card">
+                            <div class="job-header">
+                                <h3>{{ job.title }}</h3>
+                                <div class="company-name">{{ job.company }}</div>
+                            </div>
+                            
+                            <div class="job-meta">
+                                <div class="meta-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                    {{ job.location }}
+                                </div>
+                                <div class="meta-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    {{ job.get_job_type_display }}
+                                </div>
+                                <div class="meta-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                    </svg>
+                                    {{ job.get_faculty_display }}
+                                </div>
+                                {% if job.salary %}
+                                <div class="meta-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                    {{ job.salary }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="job-description">
+                                {{ job.description|truncatewords:50 }}
+                            </div>
+
+                            <div class="job-footer">
+                                {% if job.url %}
+                                    <a href="{{ job.url }}" class="apply-btn" target="_blank" rel="noopener noreferrer">Apply Now</a>
+                                {% endif %}
+                                {% if job.created_at %}
+                                <div class="date-posted">
+                                    Posted {{ job.created_at|timesince }} ago
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="empty-state">
+                            <h3>No jobs found</h3>
+                            <p>Try adjusting your search filters or check back later.</p>
+                            <a href="{% url 'job_list' %}" class="apply-btn">Browse All Jobs</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Fliptel Jobs</h3>
+                <p style="color: #adb5bd;">Connecting talented professionals with top employers across all industries.</p>
+            </div>
             
-            <form method="get" class="search-form">
-                <input type="text" name="q" class="search-input" placeholder="Job title, keywords, or company" value="{{ request.GET.q }}">
-                <button type="submit" class="search-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    Search
-                </button>
-            </form>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="{% url 'job_list' %}">Browse All Jobs</a></li>
+                </ul>
+            </div>  
         </div>
-    </section>
-
-    <!-- Jobs Section -->
-    <section class="jobs-section">
-        <div class="container">
-            <h2 class="section-title">Available Jobs</h2>
-
-
-            <div class="job-list">
-                {% for job in jobs %}
-                    <div class="job-card">
-                        <div class="job-header">
-                            <h3>{{ job.title }}</h3>
-                            <div class="company-name">{{ job.company }}</div>
-                        </div>
-                        
-                        <div class="job-meta">
-                            <div class="meta-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                {{ job.location }}
-                            </div>
-                            <div class="meta-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                </svg>
-                                {{ job.get_job_type_display }}
-                            </div>
-                            <div class="meta-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                                </svg>
-                                {{ job.get_faculty_display }}
-                            </div>
-                            {% if job.salary %}
-                            <div class="meta-item">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="12" y1="1" x2="12" y2="23"></line>
-                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                                </svg>
-                                {{ job.salary }}
-                            </div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="job-description">
-                            {{ job.description|truncatewords:50 }}
-                        </div>
-
-                        <div class="job-footer">
-                            {% if job.url %}
-                                <a href="{{ job.url }}" class="apply-btn" target="_blank" rel="noopener noreferrer">Apply Now</a>
-                            {% endif %}
-                            {% if job.created_at %}
-                            <div class="date-posted">
-                                Posted {{ job.created_at|timesince }} ago
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% empty %}
-                    <div class="empty-state">
-                        <h3>No jobs found</h3>
-                        <p>Try adjusting your search filters or check back later.</p>
-                        <a href="{% url 'job_list' %}" class="apply-btn">Browse All Jobs</a>
-                    </div>
-                {% endfor %}
+        
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <div class="sms-ad">
+                    <p>SMS the word "jobs" to 21678 for daily job openings</p>
+                </div>
+                <div class="copyright">
+                    &copy; 2023 Fliptel Jobs. All rights reserved.
+                </div>
             </div>
         </div>
-    </section>
+    </footer>
 
     <script>
         // Mobile Menu Toggle
